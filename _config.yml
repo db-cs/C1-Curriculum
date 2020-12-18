@@ -1,6 +1,6 @@
 title: "C1 Curriculum"
 # theme: jekyll-theme-primer
-theme: just-the-docs
+remote_theme: pmarsceill/just-the-docs
 github:
   is_project_page: false
 aux_links:
