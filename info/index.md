@@ -1,6 +1,8 @@
 ---
 layout: default
-title: Unit 0
-nav_order: 3
+title: Course Info
+nav_order: 1
 has_children: true
 ---
+
+## Title

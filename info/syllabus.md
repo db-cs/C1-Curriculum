@@ -1,21 +1,11 @@
-# Coding 1 Syllabus
-
-### Mr. Nathan Bailey
-
-423-378-8440 ext. 8591\
-[dbailey@k12k.com](mailto:dbailey@k12k.com)
-
-**Website:** [tribebytes.com](https://tribebytes.com)\
-**Instagram**: [@tribebytes](https://www.instagram.com/tribebytes)\
-**Twitter**: [@tribebytes](https://twitter.com/tribebytes)
-
-Please reach out if you have any questions or concerns. I will return calls and emails within 24 hours.
-
-### Office Hours:
-
-Monday - Friday from 7:45-8:15 and 2:45-3:15
-
 ---
+layout: default
+title: 🧭 &nbsp;Syllabus
+nav_order: 1
+parent: Course Info
+---
+
+# 💻 Coding 1 Syllabus
 
 ## What Is This Course?
 
@@ -37,3 +27,7 @@ To be successful in this course, you need to be curious about how programming wo
 - We give grace to others and ourselves.
 - We consider the impacts of our decisions and deal with the consequences of our actions.
 - We value the contributions of our team and celebrate our successes.
+
+## What If I Need Accomodations?
+
+It is my goal to create a learning experience that is as accessible as possible. If you anticipate any issues related to the format, materials, or requirements of this course, please meet with me outside of class so we can explore potential options.
