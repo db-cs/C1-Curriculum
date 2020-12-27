@@ -1,22 +1,31 @@
 title: "C1 Curriculum"
-# theme: jekyll-theme-primer
-remote_theme: pmarsceill/just-the-docs
-# github:
-#   is_project_page: false
-# aux_links:
-#   "Tribebytes":
-#     - "https://tribebytes.com"
-#   "D-B on Github":
-#     - "https://github.com/db-cs"
-# aux_links_new_tab: true
-# footer_content: 'Copyright &copy; 2017-2020 Patrick Marsceill. Distributed by an <a href="https://github.com/pmarsceill/just-the-docs/tree/master/LICENSE.txt">MIT license.</a>'
-# last_edit_timestamp: true # show or hide edit time - page must have `last_modified_date` defined in the frontmatter
-# last_edit_time_format: "%b %e %Y at %I:%M %p" # uses ruby's time format: https://ruby-doc.org/stdlib-2.7.0/libdoc/time/rdoc/Time.html
+description: A course pack is a compilation of course materials put into one easy-to-access place for students.
 
-# # Footer "Edit this page on GitHub" link text
-# gh_edit_link: true # show or hide edit this page link
-# gh_edit_link_text: "Suggest an Improvement on GitHub."
-# gh_edit_repository: "https://github.com/db-cs/c1-curriculum" # the github URL for your repo
-# gh_edit_branch: "main" # the branch that your docs is served from
-# # gh_edit_source: docs # the source that your files originate from
-# gh_edit_view_mode: "tree" # "tree" or "edit" if you want the user to jump into the editor immediately
+remote_theme: dnbailey/coursepack@main
+
+collections:
+  units:
+    output: true
+    permalink: /:path/
+    layout: unit
+
+defaults:
+  - scope:
+      type: "units"
+    values:
+      layout: "unit"
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE.txt
+  - LICENSE
+  - README-*.md
+  - README.md
+  - coursepack.gemspec
+  - postcss.config.js
+  - tailwind.config.js
+  - package.json
+  - yarn.lock
+  - /docs
+  - /screenshots

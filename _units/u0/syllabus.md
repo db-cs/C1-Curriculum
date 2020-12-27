@@ -1,5 +1,4 @@
 ---
-layout: default
 title: 🧭 &nbsp;Syllabus
 nav_order: 1
 parent: Course Info
