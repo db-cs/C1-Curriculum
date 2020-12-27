@@ -16,16 +16,5 @@ defaults:
       layout: "unit"
 
 exclude:
-  - Gemfile
-  - Gemfile.lock
-  - LICENSE.txt
   - LICENSE
-  - README-*.md
   - README.md
-  - coursepack.gemspec
-  - postcss.config.js
-  - tailwind.config.js
-  - package.json
-  - yarn.lock
-  - /docs
-  - /screenshots
