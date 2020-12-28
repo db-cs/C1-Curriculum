@@ -13,7 +13,7 @@ order: 1
 **Phone:** 423-378-8440 ext. 8591\
 **Email:** [dbailey@k12k.com](mailto:dbailey@k12k.com)
 
-![Nathan Bailey profile photo](profilepic.jpeg)
+![Nathan Bailey profile photo](../images/profilepic.jpeg)
 
 **Website:** [tribebytes.com](https://tribebytes.com)\
 **Instagram**: [@tribebytes](https://www.instagram.com/tribebytes)\
@@ -47,11 +47,11 @@ My personal motto is `Never Stop Learning`. The world never stands still, and th
 
 Here's what the tech world looked like when I was born.
 
-![](techin84.jpg)
+![](../images/techin84.jpg)
 
 Here's what the tech world looked like when I was in high school.
 
-![](techin03.jpg)
+![](../images/techin03.jpg)
 
 ## Learning Never Stops
 

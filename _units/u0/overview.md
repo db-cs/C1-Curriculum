@@ -8,7 +8,26 @@ permalink: "/u0/"
 
 # 💻 Welcome to C1
 
-## What Is This Course?
+## What will I learn in this unit?
+
+We're just getting started. The goal of this unit is to get you comfortable with Canvas and to introduce the ways you'll be graded on the assignments we complete in class. Additionally, we will have a chance to explore some careers in Computer Science (CS).
+
+## What will I make in this unit?
+
+At the end of the unit, you will make a brief presentation on a CS career that interests you.
+
+## Objectives
+
+- Understand and demonstrate the use of Canvas to submit assignments and complete activities.
+- Understand the course standards and how assignments are graded.
+- Create a presentation that explores and evaluates a CS career that interests you.
+
+## Essential Questions
+
+- What careers are related to Computer Science?
+- What kinds of skills, knowledge, and credentials are necessary to be successful in a Computer Science career?
+
+<!-- ## What Is This Course?
 
 C1 is the second course in the Coding program of study. In this course, we will dive deeply into programming constructs and professional practices.
 
@@ -41,4 +60,4 @@ You will need to read carefully and think deeply. You must be willing work with 
 
 ## What If I Need Accomodations?
 
-It is my goal to create a learning experience that is as accessible as possible. If you anticipate any issues related to the format, materials, or requirements of this course, please meet with me outside of class so we can explore potential options.
+It is my goal to create a learning experience that is as accessible as possible. If you anticipate any issues related to the format, materials, or requirements of this course, please meet with me outside of class so we can explore potential options. -->
