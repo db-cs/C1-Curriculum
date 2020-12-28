@@ -1,5 +1,6 @@
 title: "C1 Curriculum"
-description: A course pack is a compilation of course materials put into one easy-to-access place for students.
+description: C1 is the second course in the Coding program of study. In this course, we will dive deeply into programming constructs and professional practices.
+url: https://c1.tribebytes.com
 
 remote_theme: dnbailey/coursepack@main
 

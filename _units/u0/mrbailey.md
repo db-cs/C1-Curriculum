@@ -1,8 +1,10 @@
 ---
-title: 👋 &nbsp;Meet Mr. Bailey
-unit: 0
+title: Meet Mr. Bailey
+unit: Getting Started
 order: 1
 ---
+
+# 👋 Meet Mr. Bailey
 
 ## Nathan Bailey, M.Ed.
 
@@ -11,17 +13,19 @@ order: 1
 **Phone:** 423-378-8440 ext. 8591\
 **Email:** [dbailey@k12k.com](mailto:dbailey@k12k.com)
 
+![Nathan Bailey profile photo](profilepic.jpeg)
+
 **Website:** [tribebytes.com](https://tribebytes.com)\
 **Instagram**: [@tribebytes](https://www.instagram.com/tribebytes)\
 **Twitter**: [@tribebytes](https://twitter.com/tribebytes)
 
-Please reach out if you have any questions or concerns. I will return calls and emails within 24 hours.
+Please reach out if you have any questions or concerns. I will get back to you within 24 hours.
 
 ### Office Hours:
 
 Monday - Friday from 7:45-8:15 and 2:45-3:15
 
----
+<hr />
 
 ## I'm a nerd
 
@@ -42,19 +46,18 @@ The most important thing you should know about me is that I care. **You are the 
 My personal motto is `Never Stop Learning`. The world never stands still, and there is always something new to learn and explore. This is what drives me, and I hope to share with you some of the things that I have learned. One of the most important lessons in Tech is that everything changes. Really the only thing that is constant is that nothing is constant. What is relevant today will be laughable in five years. To be successful you need to be flexible and be curious.
 
 Here's what the tech world looked like when I was born.
-First Day Intro.jpg
+
+![](techin84.jpg)
 
 Here's what the tech world looked like when I was in high school.
 
-First Day Intro (1).jpg
+![](techin03.jpg)
 
 ## Learning Never Stops
 
 Some of my first experiences programming were when I was in high school. I remember opening the source code for QBasics Gorillas to try and hack the physics system when I should have probably been doing classwork. I also created text-based adventure games on my TI-83+ when I needed to be practice pre-calculus. Programming has always been about building and creating for me. I love the power the computer provides for creating your own world. I still love this about programming. I'm constantly exploring new languages and frameworks so that I can build something cool.
 
 {% include youtubePlayer.html id="UDc3ZEKl-Wc" %}
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/UDc3ZEKl-Wc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 I never intended on becoming a teacher, but my first day in the classroom I knew that I had found where I belong. You have to be open to new experiences and reflect on what makes you happy. Despite never intending to be an educator, I love what I do. In 2019 I started my Master's degree in Educational Leadership and Policy at ETSU. I graduated in December of 2020, and I looking to start my Ph.D. soon. It's not the diplomas that drive me. I just want to push myself and learn more.
 
