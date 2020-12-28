@@ -2,11 +2,10 @@
 title: Meet Mr. Bailey
 unit: Getting Started
 order: 1
+in_sidebar: true
 ---
 
-# 👋 Meet Mr. Bailey
-
-## Nathan Bailey, M.Ed.
+## 👋 Nathan Bailey, M.Ed.
 
 **Pronouns:** he, him, his
 

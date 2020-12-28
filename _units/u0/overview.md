@@ -3,10 +3,9 @@ title: Overview
 description: In this unit we will get started learning about the course's learning targets and expectations.
 unit: Getting Started
 is_overview: true
+in_sidebar: true
 permalink: "/u0/"
 ---
-
-# 💻 Welcome to C1
 
 ## What will I learn in this unit?
 
