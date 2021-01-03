@@ -59,4 +59,8 @@ Some of my first experiences programming were when I was in high school. I remem
 
 I never intended on becoming a teacher, but my first day in the classroom I knew that I had found where I belong. You have to be open to new experiences and reflect on what makes you happy. Despite never intending to be an educator, I love what I do. In 2019 I started my Master's degree in Educational Leadership and Policy at ETSU. I graduated in December of 2020, and I looking to start my Ph.D. soon. It's not the diplomas that drive me. I just want to push myself and learn more.
 
-I'd encourage you to find something you want to invest in. Passion is built on the investment of time. You will become passionate about anything you invest your time in. Explore broadly while you are young because you never know where things will lead you.
+## Curiosity
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">“Be curious. Read widely. Try new things. I think a lot of what people call intelligence boils down to curiosity.” - Aaron Swartz</p>&mdash; Programming Wisdom (@CodeWisdom) <a href="https://twitter.com/CodeWisdom/status/1174729894246473730?ref_src=twsrc%5Etfw">September 19, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+I'd encourage you to invest in curiousity. Passion is built on the investment of time. Purpose is found often by accident. You will become passionate about anything you invest your time in, and you will find your purpose if you stay open. Explore broadly while you are young because you never know where things will lead you.
