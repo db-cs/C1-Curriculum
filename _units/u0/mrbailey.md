@@ -2,7 +2,6 @@
 title: Meet Mr. Bailey
 unit: Getting Started
 order: 1
-in_sidebar: true
 ---
 
 ## 👋 Nathan Bailey, M.Ed.
@@ -56,7 +55,7 @@ Here's what the tech world looked like when I was in high school.
 
 Some of my first experiences programming were when I was in high school. I remember opening the source code for QBasics Gorillas to try and hack the physics system when I should have probably been doing classwork. I also created text-based adventure games on my TI-83+ when I needed to be practice pre-calculus. Programming has always been about building and creating for me. I love the power the computer provides for creating your own world. I still love this about programming. I'm constantly exploring new languages and frameworks so that I can build something cool.
 
-{% include youtubePlayer.html id="UDc3ZEKl-Wc" %}
+{% include responsive.html source="https://www.youtube.com/embed/UDc3ZEKl-Wc" %}
 
 I never intended on becoming a teacher, but my first day in the classroom I knew that I had found where I belong. You have to be open to new experiences and reflect on what makes you happy. Despite never intending to be an educator, I love what I do. In 2019 I started my Master's degree in Educational Leadership and Policy at ETSU. I graduated in December of 2020, and I looking to start my Ph.D. soon. It's not the diplomas that drive me. I just want to push myself and learn more.
 
