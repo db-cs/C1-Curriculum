@@ -15,30 +15,39 @@ dropbox:
 
 <p><strong>Table of Contents:</strong></p>
 - [Overview](#overview)
-  - [Accessing the Project](#accessing-the-project)
+  - [Top-Down Design](#top-down-design)
+  - [Accessing the Project on Repl.it](#accessing-the-project-on-replit)
   - [What We Are Going to Build](#what-we-are-going-to-build)
   - [Dependencies](#dependencies)
 - [Setting Up a Node Project](#setting-up-a-node-project)
-  - [Structuring the Project](#structuring-the-project)
 - [Initalizing the CLI](#initalizing-the-cli)
+  - [Structuring the Project](#structuring-the-project)
+  - [Utilities](#utilities)
+  - [Checking to See If Already a Git Repo](#checking-to-see-if-already-a-git-repo)
+- [User Input](#user-input)
+  - [Testing](#testing)
 
 ---
 
+**Note:** This project is based on the excellent tutorial written by Lukas White and James Hibbard on [SitePoint](https://www.sitepoint.com/javascript-command-line-interface-cli-node-js/). While we are going to deviate from this tutorial in some significant ways, the initial tutorial deserves much credit.
+
 # Overview
 
-**Note:** This project is based on the excellent tutorial written by Lukas White and James Hibbard on [SitePoint](https://www.sitepoint.com/javascript-command-line-interface-cli-node-js/).
+Node.js is a versatile tool that is used to build many high level applications, but there are many other ways to used this tool. While we will eventually learn to create some high level programs, sometimes a task requires requires us to interact with system-level software in order to solve the problem. We're going to use Node to build a command line tool that will help us when we are starting a new project.
 
-Node.js is a versatile tool that is used for many Web Applications, but there are many other applicaitons. While we will learn to create high level programs, sometimes a task requires requires us to interact with system-level software in order to solve the problem.
+## Top-Down Design
 
-We're going to use Node to build a command line tool that will help us when we are starting a new project.
+Top-down design is where you break a larger problem down into (smaller) sub-problems, until the subproblems are directly solvable. A top-down design process can be represented by a structure diagram, you don't start coding until you have a solid idea of how you will break the problem down.
 
-## Accessing the Project
+For our project, our larger problem is how to initiate a problem. Let's look at a strugure digram for our app.
 
-The project is setup on Repl.it, and you'll need to open it using the link below.
+![Top-Down Design for the Project](../images/topdown.jpg)
+
+## Accessing the Project on Repl.it
+
+The project is setup on Repl.it, and you'll need to open it using the link below. We'll use Repl.it to build the project, but you could easily build it on your Mac using VS Code. I'm going to request you work on Repl.it, so I can monitor your progress and leave you notes as you work.
 
 [Open Project on Repl.it](https://repl.it/team/dbcs/012-Backend-DevelopmentCommand-Line-Tool){: style="border: 1px solid #ccc; border-radius: 5px; padding: 8px 10px; background: #efefef;" target="\_blank"}
-
-Go ahead and setup the GitHub connection under the Version Control Tab, and then we'll be ready to dive in.
 
 ## What We Are Going to Build
 
@@ -65,7 +74,6 @@ In addition to writing our own code, we are also going to be importing quite a b
 Here's what all we'll be using:
 
 - [chalk](https://www.npmjs.com/package/chalk) — colorizes the output
-- [clear](https://www.npmjs.com/package/clear) — clears the terminal screen
 - [clui](https://www.npmjs.com/package/clui) — draws command-line tables, gauges and spinners
 - [configstore](https://www.npmjs.com/package/configstore) — easily loads and saves config
 - [figlet](https://www.npmjs.com/package/figlet) — creates ASCII art from text
@@ -75,7 +83,6 @@ Here's what all we'll be using:
 - [@octokit/rest](https://www.npmjs.com/package/@octokit/rest) — a GitHub REST API client for Node.js
 - [@octokit/auth-token](https://www.npmjs.com/package/@octokit/auth-basic) — an implementation of one of GitHub’s authentication strategies
 - [simple-git](https://www.npmjs.com/package/simple-git) — a tool for running Git commands in a Node.js application
-- [touch](https://www.npmjs.com/package/touch) — a tool for implementing the Unix touch command.
 
 # Setting Up a Node Project
 
@@ -102,104 +109,184 @@ Open the new file it created called `package.json` and update it with the follow
 Now let's install a couple of our dependencies using the shell.
 
 ```bash
-$ npm install chalk figlet clear
+$ npm install chalk figlet
 ```
 
-These are all we need to start with. We'll add more later as we need them. The packages are stored in the folder named `node_modules`, which is not necessary for us to add to GitHub. Let's create a file that will tell git to ignore anything in the `node_modules` directory.
+These are all we need to start with. We'll add more later as we need them.
 
-```bash
-$ echo "node_modules" > .gitignore
-```
+# Initalizing the CLI
 
-This simple creates the file and then inserts a new line with the of `node_modules`.
-
-Now open up `index.js` and add the following. Note the `require` method will import the node modules we installed in the last step, so we can use them in our project.
+Great! We now have everything setup and ready to start building our CLI tool. First let's setup a function that will contain the entire app. We'll have sever asyncronous calls in our app, so let's make this an async function.
 
 ```javascript
-const chalk = require("chalk");
-const clear = require("clear");
-const figlet = require("figlet");
+const main = async () => {
+  // We'll add our code to run the app here.
+};
+
+require.main === module && main();
 ```
+
+We are going to store our function in a `const main = async () => {}` rather than just using `async function main() {}` to define the function. This will prevent the name from being overridden later.
+
+Unlike most programming languages, node does not have a built-in entry point. We can add our own by checking if the current module is the main module `require.main === module`. If this is true, the current file has been run directly - as opposed to have been imported by another file - and in this case we can call the main function. The `statement && statement` example of short circuit logic. If the first statement is true, then the second statement is run.
 
 ## Structuring the Project
 
-Instead of writing everything in the `index.js`, we are going ot setup some helper methods to break our code up into seperate modules. We'll have a `lib` directory that will house all of these helper modules.
+Instead of writing everything in the `index.js`, we are going create use sub-modules to break our code up into smaller sub-programs like we did in the top-down desgin. We'll have a `lib` directory that will house all of these helper modules.
 
-- **files.js** — basic file management
-- **inquirer.js** — command-line user interaction
-- **github.js** — access token management
-- **repo.js** — Git repository management.
+- **utils.js** — general utilies
+- **prompt.js** — command-line user interaction
+- **github.js** — github access token management
+- **repo.js** — git repository management
 
 In the shell run the following:
 
 ```bash
 $ mkdir lib
-$ touch lib/files.js lib/prompt.js lib/github.js lib/repo.js
+$ touch lib/utils.js lib/prompt.js lib/github.js lib/repo.js
 ```
 
-Let’s start with `lib/files.js`. This helper will take care of the following:
+## Utilities
 
-- get the current directory to use as the repo name
-- check whether a directory already exists so we can see if it's already a git repo
+Now that we have a way to run our code, let's add a title to display to our user when they start up our applicaiton. We'll be using two packages we imported earlier: `chalk` and `figlet`.
+
+Now open up `lib/utils.js` and add the following. Note the `require` method will import the node modules we installed in the last step, so we can use them in our project.
 
 ```javascript
-const fs = require("fs");
-const path = require("path");
+const chalk = require("chalk");
+const figlet = require("figlet");
+```
 
+Since this will be imported in the `index.js` we need to export this code.
+
+```javascript
 module.exports = {
-  getCurrentDirectoryBase: () => path.basename(process.cwd()),
-  directoryExists: (filePath) => fs.existsSync(filePath),
+  displayTitle: () => {
+    console.clear();
+
+    console.log(
+      chalk.yellowBright(
+        figlet.textSync("Super Init", { horizontalLayout: "full" })
+      )
+    );
+
+    console.log(
+      "A simple utility that runs git init and adds a remote on GitHub.",
+      "\n"
+    );
+  },
 };
 ```
 
-Now we can go back to `index.js` and add the following line to require the new module:
+First we export an object that has a single method with the key `displayTitle`. It has a function as value that will console.log our title.
+
+In the first part of the method, we clear the console and use `chalk` and `figlet` to create a fancy title. The `"\n"` adds a new line after our description. It's an escape character which is why it starts with the `\`. This will make the menu we're about to build appear a line lower, which will just look cleaner.
+
+Now we can go back to `index.js` and add the following line to the top to require the new module:
 
 ```javascript
 const files = require("./lib/files");
 ```
 
-# Initalizing the CLI
-
-Great! We now have everything setup and ready to start building our CLI tool. Let's start off by add a title to display to our user when they start up our applicaiton. We'll be using two packages we imported earlier: `chalk` and `figlet`.
-
-Add the following below your imports in `index.js`.
+Then let's call our `displayTitle` method. Inside the `main` add:
 
 ```javascript
-clear();
-
-console.log(
-  chalk.yellowBright(
-    figlet.textSync("Super Init", { horizontalLayout: "full" })
-  )
-);
-
-console.log(
-  "A simple utility that runs git init and adds a remote on GitHub.",
-  "\n"
-);
+utils.displayTitle();
 ```
-
-Note that the `"\n"` adds a new line after our description. It's an escape character which is why it starts with the `\`. This will make the menu we're about to build appear a line lower, which will just look cleaner.
 
 Now you can run your app using `node index.js` in the shell.
 
 ![The title of our app](../images/titlesetup.png)
 
-Now that we have a cool title let's setup a quick check to see if git has already been setup. Right after the code for the title in `index.js` add the following:
+Now that we have a cool title, let's add a quick check to see if git has already been setup.
+
+## Checking to See If Already a Git Repo
+
+Now lets add a new method to `lib/utils.js`. This helper method will take care of the following:
+
+- get the current directory to use as the repo name
+- check whether a directory already exists so we can see if it's already a git repo
 
 ```javascript
-if (files.directoryExists(".git")) {
-  console.log(chalk.red("Already a Git repository!"));
-  process.exit();
+// With the other imports
+const fs = require("fs");
+
+module.exports = {
+  displayTitle: () => {...},
+
+  // Adding the new module
+  checkForGitFolder: () => {
+    if (fs.existsSync(".git")) {
+      console.log(chalk.red("Already a Git repository!"));
+      process.exit();
+    }
+  },
 }
+
 ```
 
-This will call the function we setup in `files.js` named `directoryExists()`. If it does exist, then we'll notify the user and exit the program. `process.exit()` will stop our app and return to the command prompt.
+Right after the code for the title in `index.js` add the following:
 
-Go ahead and commit your changes if you haven't already.
+```javascript
+utils.checkForGitFolder();
+```
 
-<!-- # User Input
+This will call the method we setup in `utils.js`. If a `.git` folder exists, then we'll notify the user and exit the program. Note the `process.exit()` will stop our app and return to the command prompt.
 
+Go ahead and test this out. You can temporarily create a `.git` directory and run `node index.js` to check if it is working.
+
+# User Input
+
+Our next step is to start prompting the user for input. We'll use the `inquirer` package to create various types of prompts.
+
+Open the `lib/prompt.js`. Then import the `inquirer` package.
+
+```javascript
+const inquirer = require("inquirer");
+```
+
+Just like in the `lib/utils` we'll be exporting the various methods, so go ahead and add the following:
+
+```javascript
+module.exports = {
+  askGithubCredentials: () => {
+    const questions = [
+      {
+        name: "token",
+        type: "password",
+        message: "Enter your personal access token:",
+        validate: (value) =>
+          value.length
+            ? true
+            : "Please enter your personal access token.",
+      },
+    ];
+
+    return inquirer.prompt(questions);
+  },
+};
+```
+
+As you can see we first create an array of questions to prompt the user for their personal access token. This is a one time password that allows our app to access GitHub's api. You can read more about it at [https://git.io/JJyrT](https://git.io/JJyrT). For now just know that it works like a password.
+
+## Testing
+
+Let's test our new menu. Go back to `index.js` and import our new modules.
+
+```javascript
+const prompt = require("./lib/prompt");
+```
+
+Then add the following to main after our previous code.
+
+```javascript
+const credentials = await prompt.askGithubCredentials();
+console.log(credentials);
+```
+
+Now run `node index.js`. We won't be actually calling `prompt` from the `main` function, so go ahead and remove the import for `prompt` adn the code to get the credentials.
+
+<!--
 # Github
 
 ## Authenticating with GitHub
