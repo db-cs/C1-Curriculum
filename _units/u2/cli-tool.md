@@ -39,7 +39,7 @@ Node.js is a versatile tool that is used to build many high level applications, 
 
 Top-down design is where you break a larger problem down into (smaller) sub-problems, until the subproblems are directly solvable. A top-down design process can be represented by a structure diagram, you don't start coding until you have a solid idea of how you will break the problem down.
 
-For our project, our larger problem is how to initiate a problem. Let's look at a strugure digram for our app.
+For our project, our larger problem is how to initiate a problem. Let's look at a structure diagram for our app.
 
 ![Top-Down Design for the Project](../images/topdown.jpg)
 
@@ -92,7 +92,7 @@ First we need to make this a Node.js project. Open the shell in your Repl.it pro
 $ npm init -y
 ```
 
-Open the new file it created called `package.json` and update it with the following.
+Node has a build in package manager that will handle importing code and running our code. The package manager is `npm` or Node Package Manager. Each Node project should have a `package.json` which describes the app you're building. You can read what can be included at [https://docs.npmjs.com/cli/v6/configuring-npm/package-json](https://docs.npmjs.com/cli/v6/configuring-npm/package-json). Open the new file it created called `package.json` and update it with the following.
 
 ```json
 {
