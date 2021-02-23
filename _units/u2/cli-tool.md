@@ -26,6 +26,9 @@ dropbox:
   - [Checking to See If Already a Git Repo](#checking-to-see-if-already-a-git-repo)
 - [User Input](#user-input)
   - [Testing](#testing)
+- [Github](#github)
+  - [Storing the Token](#storing-the-token)
+  - [Authenticating with GitHub](#authenticating-with-github)
 
 ---
 
@@ -286,11 +289,131 @@ console.log(credentials);
 
 Now run `node index.js`. We won't be actually calling `prompt` from the `main` function, so go ahead and remove the import for `prompt` adn the code to get the credentials.
 
-<!--
 # Github
+
+GitHub changed the way you can authenticate in November of 2020, which means you can no longer use a username and password to login to a 3rd party application. Rather you must generate a token for that application and specify what it has access to within your GitHub account through the GitHub API.
+
+In order to test your app and make changes to your account you'll need to generate a Personal Access Token for this app to access the GitHub API. You can learn how to do this at [https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token).
+
+Go to [https://github.com/settings/tokens](https://github.com/settings/tokenshttps://github.com/settings/tokens) and create a new token for `Superinit` that has the `repo` scope access. This just means that we'll be able to make changes to repos, but not anything else via the API.
+
+The access token that is generated will be visible once. I'd suggest creating a txt file to store it in, because you'll have to generate a new one if you forget it. 😬
+
+## Storing the Token
+
+The great thing about the access token is that we can store it the first time a user enters it, and then we don't have to ask again. The last code we added was the prompt for the user to enter their credentials. We tested it and then deleted the calls to it in the main function. That's because we don't want to do it everytime. Instead we're going to use our `/lib/github.js`:
+
+- prompt the user for credentials
+- store that somewhere safe
+- fetch it if it's already stored
+
+The package we'll use to store our token is `configstore`. It will write the token to a file on our machine. Unlike using `fs`, config store puts this in a smart place and then you don't have to worry about it.
+
+Now we need to install a few new packages. Open the shell and run:
+
+```bash
+$ npm install configstore @octokit/rest @octokit/auth-token clui
+```
+
+Open `/lib/github.js` and add the following statements to setup our module.
+
+```javascript
+const configstore = require("configstore");
+const clui = require("clui");
+const chalk = require("chalk");
+const { Octokit } = require("@octokit/rest");
+const { createTokenAuth } = require("@octokit/auth-token");
+
+const prompt = require("./prompt");
+const pkg = require("../package.json");
+
+const conf = new configstore(pkg.name);
+const Spinner = clui.Spinner;
+let ocktokit;
+```
+
+Now let's add some new methods to our exports.
+
+```javascript
+module.exports = {
+  getInstance: () => ocktokit,
+  getStoredGithubToken: () => conf.get("github.token");
+};
+```
 
 ## Authenticating with GitHub
 
+Now that we have some place to store our token, let's get authenticated with GitHub. Let's add a new method to our exports.
+
+```javascript
+module.exports = {
+  getInstance: () => {...},
+  getStoredGithubToken: () => {...},
+
+  // Add the new method here
+  getPersonalAccessToken: async () => {
+    // Let the user know what they need to authenticate
+    console.log(
+      chalk.yellowBright(
+        "You'll need to generate a GitHub Personal Access Token."
+      )
+    );
+
+    console.log(
+      chalk.yellowBright("Visit"),
+      chalk.underline.yellowBright(
+        "https://git.io/JJyrT"
+      ),
+      chalk.yellowBright("to learn how.")
+    );
+
+    // Use the prompt module to get the user token
+    const credentials = await prompt.askGithubCredentials();
+
+    // Create a spinner and start to notify the user
+    const status = new Spinner(
+      "Authenticating you, please wait..."
+    );
+    status.start();
+
+    // Generate an auth object
+    const auth = createTokenAuth(
+      credentials.token
+    );
+
+    // This lets us try code that may not work
+    try {
+      // Use our new auth to see if we're logged in
+      // Returns our username
+      const {
+        data: { login: username },
+      } = await auth.hook(request, "GET /user");
+
+      // If we are logged in
+      if (username) {
+        // Display our username
+        console.log(
+          chalk.yellowBright(
+            "\n",
+            `Authenticated in as: ${username}`
+          )
+        );
+
+        // Store the token for future use
+        conf.set("github.token", auth.token);
+        return auth.token;
+      }
+    } finally {
+      status.stop(); //Stop the spinner when everything is finished.
+    }
+  },
+}
+
+```
+
+Great now we can access GitHub to make changes. Next we'll get additional details from the user on what we'll call the repo and we'll create a module to handle creating the repos.
+
+<!--
 ## GitHub API
 
 # Local Repository
