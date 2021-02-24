@@ -29,6 +29,17 @@ dropbox:
 - [Github](#github)
   - [Storing the Token](#storing-the-token)
   - [Authenticating with GitHub](#authenticating-with-github)
+  - [Grabbing the Stored Token](#grabbing-the-stored-token)
+  - [GitHub API](#github-api)
+  - [Testing Out Access to GitHub](#testing-out-access-to-github)
+  - [Dealing with Errors](#dealing-with-errors)
+- [Dealing with Repos](#dealing-with-repos)
+  - [Creating the Remote Repo](#creating-the-remote-repo)
+  - [Prompting User for Repo Details](#prompting-user-for-repo-details)
+    - [Get the Current Directory](#get-the-current-directory)
+  - [Setting Up a .gitignore](#setting-up-a-gitignore)
+  - [Setting Up Our Repo](#setting-up-our-repo)
+- [Final Steps](#final-steps)
 
 ---
 
@@ -188,7 +199,7 @@ In the first part of the method, we clear the console and use `chalk` and `figle
 Now we can go back to `index.js` and add the following line to the top to require the new module:
 
 ```javascript
-const files = require("./lib/files");
+const utils = require("./lib/utils");
 ```
 
 Then let's call our `displayTitle` method. Inside the `main` add:
@@ -312,7 +323,7 @@ The package we'll use to store our token is `configstore`. It will write the tok
 Now we need to install a few new packages. Open the shell and run:
 
 ```bash
-$ npm install configstore @octokit/rest @octokit/auth-token clui
+$ npm install configstore clui @octokit/rest @octokit/auth-token @octokit/request
 ```
 
 Open `/lib/github.js` and add the following statements to setup our module.
@@ -323,6 +334,7 @@ const clui = require("clui");
 const chalk = require("chalk");
 const { Octokit } = require("@octokit/rest");
 const { createTokenAuth } = require("@octokit/auth-token");
+const { request } = require("@octokit/request");
 
 const prompt = require("./prompt");
 const pkg = require("../package.json");
@@ -413,9 +425,395 @@ module.exports = {
 
 Great now we can access GitHub to make changes. Next we'll get additional details from the user on what we'll call the repo and we'll create a module to handle creating the repos.
 
-<!--
+## Grabbing the Stored Token
+
+If the user gets logged in using their personal access token, there is no need to ask them for it again. Instead let's check if it is stored, then we can load it if it's avaialble or prompt the user if it's not. Let's add the following method to our `/lib/github.js` exports.
+
+```javascript
+module.exports = {
+  getInstance: () => {...},
+  getStoredGithubToken: () => {...},
+  getPersonalAccessToken: async () => {...},
+
+  // Add the new method here
+  getGithubToken: async () => {
+    let token = module.exports.getStoredGithubToken();
+
+    return (
+      token ||
+      (await module.exports.getPersonalAccessToken())
+    );
+  },
+}
+```
+
 ## GitHub API
 
-# Local Repository
+Now that we are signed in, we need some way to interact with GitHub. Luckily we are provided with an API, but communicating with that API can be tricky. Octokit provides an easy way to work with GitHub. Let's add one last method to our `/lib/github.js` exports.
 
-# Final Steps -->
+```javascript
+module.exports = {
+  getInstance: () => {...},
+  getStoredGithubToken: () => {...},
+  getPersonalAccessToken: async () => {...},
+  getGithubToken: async () => {...},
+
+  // Add the new method here
+  githubAuth: (token) =>
+    (ocktokit = new Octokit({ auth: token })),
+```
+
+This will use our token from storage/user to send commands to and from GitHub. You now have the POWER!!!
+
+![Heman Meme](../images/you-have-the-power.jpg)
+
+## Testing Out Access to GitHub
+
+Back in the `index.js` let's make some calls to our new methods and test that it is working. Add the following to our `main` function.
+
+```javascript
+// With the other imports add
+const github = require("./lib/github");
+
+// Inside the main function add
+const main = async () => {
+  // Below the utils calls
+  try {
+    const token = await github.getGithubToken();
+    github.githubAuth(token);
+
+    console.log("All done!");
+  } catch (error) {
+    console.error(error);
+  }
+};
+```
+
+Now you can run `node index.js` and you should see it prompt you for your personal access token. Then it will try to connect to GitHub. If there is an error, it will show via the `console.error(error);`. We'll work on improving the error messages next. If not you should see `All done!`.
+
+## Dealing with Errors
+
+Errors do happen. Whether it's a problem with the personal access token or the internet is down at GitHub we need to plan for the worst, and give meaningful messages to our users when it happens. We're going to create a new method in the `/lib/utils`. Add the following new method.
+
+```javascript
+module.exports = {
+  displayTitle: () => {...},
+  checkForGitFolder: () => {...},
+
+  // Add the new method here
+  displayError: (error) => {
+    switch (error.status) {
+      case 401:
+        console.error(
+          chalk.red(
+            "Couldn't log you in. Please provide correct personal identificaiton token"
+          )
+        );
+        break;
+      case 422:
+        console.error(
+          chalk.red(
+            "There is already a remote repo or token with the same name."
+          )
+        );
+        break;
+      default:
+        console.error(chalk.red(err));
+    }
+  },
+}
+```
+
+Here we're using a switch/case. It's kind of like an if/else with less curly brackets. We're going to check which kind of error we recieve and send an appropriate message to the user. The `default` at the bottom will catch any other errors and output them in red.
+
+Back in `index.js` let's update the `catch(error)`.
+
+```javascript
+catch (err) {
+  // Replace console.error(error) with
+  utils.displayError(err);
+}
+```
+
+# Dealing with Repos
+
+Our last module needs to deal with the creating both our local and remote repositories. We'll be working in the `/lib/repo.js`. Let's break down what this module will take care of:
+
+- Create remote repository
+- Generate a .gitignore
+- Setup and push the local repository
+
+First let's install and import the packages we need.
+
+```bash
+$ npm install simple-git lodash
+```
+
+Now let's import and set everything up.
+
+```javascript
+const cli = require("clui");
+const fs = require("fs");
+const simpleGit = require("simple-git");
+const _ = require("lodash");
+
+const prompt = require("./prompt");
+const gh = require("./github");
+
+const Spinner = cli.Spinner;
+const git = simpleGit();
+```
+
+## Creating the Remote Repo
+
+Let's add a new method that creates our repo.
+
+```javascript
+module.exports = {
+  createRemoteRepo: async () => {
+    // First we grab our current instance of octokit
+    const github = gh.getInstance();
+
+    // We haven't created this yet, but we'll ask the user for details
+    const answers = await prompt.askRepoDetails();
+
+    // Based on what we get from the user we'll set up our data obj
+    const data = {
+      name: answers.name,
+      description: answers.description,
+      private: answers.visibility === "private",
+    };
+
+    // Let the user know what we are doing
+    const status = new Spinner("Creating remote repository...");
+    status.start();
+
+    // Attempt to create a new repo
+    try {
+      const res = await github.repos.createForAuthenticatedUser(data);
+      return res.data.clone_url; //Return the url for the repo
+    } finally {
+      status.stop(); // Stop the spinner
+    }
+  },
+};
+```
+
+This should be good to go, but we've created a problem for ourselves. We used `prompt.askForRepoDetails();` but we haven't made that yet. This is perfectly normal. We're working top-down. We define what we need and then go create it.
+
+## Prompting User for Repo Details
+
+We'll need a new package to make this work.
+
+```bash
+$ npm install minimist
+```
+
+Let's open up `/lib/prompt.js` and add the following.
+
+```javascript
+module.exports = {
+  // Add this below the other methods
+  askRepoDetails: () => {
+    const argv = require("minimist")(process.argv.slice(2));
+
+    const questions = [
+      {
+        type: "input",
+        name: "name",
+        message: "Enter a name for the repository:",
+        default: argv._[0] || utils.getCurrentDirectoryBase(),
+        validate: (value) =>
+          value.length
+            ? true
+            : "Please enter a name for the repository.",
+      },
+      {
+        type: "input",
+        name: "description",
+        default: argv._[1] || null,
+        message: "Optionally enter a description of the repository:",
+      },
+      {
+        type: "list",
+        name: "visibility",
+        message: "Public or private:",
+        choices: ["public", "private"],
+        default: "public",
+      },
+    ];
+
+    return inquirer.prompt(questions);
+  },
+};
+```
+
+So `minimist` is going to allow us to read arguments. Instead of just running `superinit` from the commandline, we'll be able to provide it arguments as well. For example:
+
+```bash
+$ superinit my_repo "This is an awesome repo"
+```
+
+If we supply those in the commandline we'll use them to set a default value for the name and description. Then the user will just hit enter instead of typing it again. This is just one more tool that you can add to your toolbox.
+
+### Get the Current Directory
+
+If you read through this carefully, you will notice that we called `utils.getCurrentDirectoryBase();`. Once again we are working top-down. We created the call to a method we haven't defined. Let's go define that now.
+
+In the `/lib/prompt.js` we first need to import `path`. This is a build in package that checks the path of where we are working.
+
+```javascript
+// With the other imports add
+const path = require("path");
+```
+
+Now, let's add the new method to our exports.
+
+```javascript
+module.exports = {
+  // Below all the other methods add
+  getCurrentDirectoryBase: () => path.basename(process.cwd()),
+};
+```
+
+This will get the current working directory, which the directory where we run `superinit` rather than the directory that `superinit` is stored in.
+
+## Setting Up a .gitignore
+
+We don't want to add every file in our directory to our repo. It is unecessary to add things like our `node_modules` and other directories. These take up a lot of space and our `package.json` makes it easy to install them on other systems by running `npm install`. A `.gitignore` is a file that defines all the directories and files that we want Git to ignore. Pretty simple, right.
+
+So let's make a method that reads all the files in our directory and asks the user which ones to ignore. Then we'll right that list of files to a `.gitignore`. Inside of `/lib/repos.js` let's add our new method.
+
+```javascript
+module.exports = {
+  // Add below the other methods
+  createGitignore: async () => {
+    // This uses lodash to get all the files and dir exect .git and .gitignore
+    const filelist = _.without(
+      fs.readdirSync("."),
+      ".git",
+      ".gitignore"
+    );
+
+    // Now that we have a list let's see what the user wants to ignore
+    if (filelist.length) {
+      const answers = await prompt.askIgnoreFiles(filelist);
+
+      if (answers.ignore.length) {
+        fs.writeFileSync(".gitignore", answers.ignore.join("\n"));
+      } else {
+        fs.appendFileSync(".gitignore", ".DS_Store");
+      }
+    } else {
+      fs.appendFileSync(".gitignore", ".DS_Store");
+    }
+  },
+};
+```
+
+Did you notice that we created a new problem for ourselves? We called `prompt.askIgnoreFiles(filelist);`, but that hasn't been defined yet. Once again we're working top-down. Let's go create that method in the `/lib/prompt.js`.
+
+```javascript
+module.exports = {
+  // Below the other methods add
+  askIgnoreFiles: (filelist) => {
+    const questions = [
+      {
+        type: "checkbox",
+        name: "ignore",
+        message:
+          "Select the files and/or folders you wish to ignore:",
+        choices: filelist,
+        default: ["node_modules", ".DS_Store"],
+      },
+    ];
+
+    return inquirer.prompt(questions);
+  },
+};
+```
+
+Notice that we use the list of files generated by `lodash` to provide our users with choices. We pass that list as a parameter to our method.
+
+## Setting Up Our Repo
+
+Great now we have a remote repo and a list of things to ignore. Let's create one last method that will do all the git commands to setup, add, commit and push our project. Back in `/lib/repo.js` let's add a new method.
+
+```javascript
+module.exports = {
+  // Add below the other modules
+  setupRepo: async (url) => {
+    // First we'll let the user know what we're doing
+    const status = new Spinner(
+      "Initializing local repository and pushing to remote..."
+    );
+    status.start();
+
+    // Now we'll use simple-git to run all of our commands
+    try {
+      await git
+        .init()
+        .add(".gitignore")
+        .add(".")
+        .commit("Initial commit")
+        .branch(["-m", "master", "main"])
+        .addRemote("origin", url)
+        .push("origin", "main");
+    } finally {
+      status.stop(); //Stop the spinner when we are done.
+    }
+  },
+};
+```
+
+# Final Steps
+
+Awesome we have everything created. Let's put it together. Back in `index.js` let's import and call all of our newly created modules.
+
+First let's make sure we have imported our `github.js` and `repo.js` from `/lib`.
+
+```javascript
+// At the top with the other imports
+const github = require("./lib/github");
+const repo = require("./lib/repo");
+```
+
+Now in our `main` function let's add the following.
+
+```javascript
+const main = async () => {
+  utils.displayTitle();
+  utils.checkForGitFolder();
+
+  try {
+    const token = await github.getGithubToken();
+    github.githubAuth(token);
+
+    // Start adding here...
+    const url = await repo.createRemoteRepo();
+
+    await repo.createGitignore();
+
+    await repo.setupRepo(url);
+    // That should be everything new.
+
+    console.log("All done!");
+  } catch (err) {
+    utils.displayError(err);
+  }
+};
+```
+
+Running `node index.js` should successfully initiate our Git project.
+
+Running `node index.js` is kind of annoying, so let's set it up so we can just run `superinit` from the CLI.
+
+Open your `package.json` and add the following below the `"main": "index.js"`.
+
+```json
+"bin": {
+  "superinit": "./index.js"
+},
+```
+
+Now you'll be able to run `npm install -g`, which will install our CLI tool to the global list of node packages. Once this completes, you'll be able to call `superinit` and your tool should run.
