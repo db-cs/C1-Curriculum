@@ -25,9 +25,9 @@ As you can see, agile project management is all about deploying early and often.
 
 ### Stand-Up Meeting
 
-Another commom practice is what is called a daily stand-up. Productivity is often hampered by long meetings. In order to combat this, stand-ups are used to keep meetings short and focused. The meeting is done at your kanban board. You should stand during the meeting. No one is comfortable which ensures the meeting will be short. 
+Another commom practice is what is called a daily stand-up. Productivity is often hampered by long meetings. In order to combat this, stand-ups are used to keep meetings short and focused. The meeting is done at your kanban board. You should stand during the meeting. No one is comfortable which ensures the meeting will be short.
 
-The meeting revolves around the three questions below. The kanban board should facilitate this converstation. The primary goal is to ensure the whole team knows what tasks have been completed and what tasks need immediate attention. 
+The meeting revolves around the three questions below. The kanban board should facilitate this converstation. The primary goal is to ensure the whole team knows what tasks have been completed and what tasks need immediate attention.
 
 ![Stand-Up Questions](../images/stand-up.png)
 
@@ -38,11 +38,11 @@ This week you will practice stand-up meetings with your team. Yes you need to st
 You will work with your team to setup your board. You will not identify all the tasks all at once, and your backlog will grow as you develop your software. Your team will need a good list of tasks to start with. The following steps should help guide your team as they setup the baord.
 
 1. Decide on a single feature you want to finish by the end of the week (1 sprint).
-    - The feature should be focused but also big enough to make progress on the larger app
-    - It's better to keep the scope narrow. You can always start a new feature if you finish early.
+   - The feature should be focused but also big enough to make progress on the larger app
+   - It's better to keep the scope narrow. You can always start a new feature if you finish early.
 1. Break that feature down into smaller components (tasks).
-    - Development
-    - Testing
-    - Documentation
+   - Development
+   - Testing
+   - Documentation
 1. Place all the tasks into the backlog.
 1. Discuss what tasks need to be completed first and place them in the Do section of your board.
