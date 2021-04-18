@@ -6,7 +6,16 @@ order: 4
 
 ## Overview
 
-Start by looking back over your development journal. How did your understanding of the problem evolve over the two weeks? What did you learn about problem solving? What does it mean to think algorithmically?
+Start by looking back over your development journal in order to refresh your memory of what you did over the last two weeks. Then consider the following.
+
+**Questions to Answer in your Post:**
+
+- How did your understanding of the problem evolve over the two weeks? (CRD1)
+- What role did you play in your team? How did you contribute? (CRD4)
+- What does it mean to think algorithmically? (AAP2)
+- What did you learn about problem solving? How did you break the problem down? (AAP3)
+
+**How to Organize your Post**
 
 - **Problem** - What were you trying to solve?
 - **Process (Pains and Gains)** - What did you do? The good, the bad, and the ugly.
@@ -40,3 +49,7 @@ console.log("This will be syntax highlighted");
 // ``` Don't forget backticks to close the code block
 ````
 `````
+
+## Problems with the Dev Blog?
+
+If you are still having trouble with publishing to your blog, just submit your post as a text-entry to this assingment.
