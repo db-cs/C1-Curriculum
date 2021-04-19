@@ -6,14 +6,14 @@ is_overview: true
 permalink: "/u3/"
 ---
 
-## What will I learn in this unit?
+## What will I learn?
 
 - How to create a front-end application using React.js.
 - How to apply the concept of state to your application.
 - How to connect to a public REST API and consume data for a Front-End UI.
 - How to infer and draw conclusions from software documentation that will help you build your application.
 
-## What will I make in this unit?
+## What will I make?
 
 You'll be building a front-end user interface for a REST API. The REST API is a publicly accesible backend that will provide data in JSON format.
 
@@ -28,18 +28,27 @@ You may choose another option if you'd like, but I need to approve it before you
 
 ### Project Guidelines
 
-- Your app should have at least two pages.
-- Your app must consume data from at least two different API endpoints.
-- Your app must use a form element as input to fetch data.
-- Your app must contain at least two custom components.
-- Your app must be free of bugs and have proper commenting.
+Your app must:
+
+- have at least two pages
+- consume data from at least two different API endpoints
+- use a form element as input to fetch data
+- utilize state to update the UI
+- contain at least two custom components
+- be free of bugs and have proper commenting
+
+### Success Criteria
+
+- Purpose of the app is clear and relevant to the data
+- UI is easy to navigate and visually attractive
+- App works as intended with no errors
 
 ## Demo Project
 
 In order to demonstrate some of the techniques you'll need to complete this assignment, I'll be using a Jeopardy REST API to create a triva game.
 
 ![Demo REST API](../u4/demo.png)
-<small>http://jservice.io/</small>
+<small>[http://jservice.io/](http://jservice.io/)</small>
 
 <br />
 
