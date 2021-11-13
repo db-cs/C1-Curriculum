@@ -19,10 +19,6 @@ order: 1
 
 Please reach out if you have any questions or concerns. I will get back to you within 24 hours.
 
-### Office Hours:
-
-Monday - Friday from 7:45-8:15 and 2:45-3:15
-
 <hr />
 
 ## I'm a nerd
